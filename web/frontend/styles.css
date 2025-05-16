@@ -1,0 +1,361 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f5f6fa;
+    --border-color: #e1e8ed;
+    --text-color: #2c3e50;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.matrix-input {
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    margin: 3px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+/* Убираем стрелки для числовых полей */
+.matrix-input::-webkit-outer-spin-button,
+.matrix-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.matrix-input[type="text"] {
+    -moz-appearance: textfield;
+}
+
+.matrix-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+.matrix-input::placeholder {
+    color: #ccc;
+}
+
+.matrix-input:focus::placeholder {
+    color: transparent;
+}
+
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.matrix-container .d-flex {
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+}
+
+.matrix-row {
+    display: flex;
+    margin: 3px 0;
+    min-height: 56px;
+    align-items: center;
+}
+
+.matrix-controls {
+    margin: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.result-container {
+    margin: 20px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: var(--error-color);
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+.success-message {
+    color: var(--success-color);
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+.matrix-bracket {
+    font-size: 60px;
+    margin: 0 15px;
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    line-height: 1;
+    align-self: stretch;
+    justify-content: center;
+}
+
+.operation-select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.operation-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+.operation-select option {
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+.input-group-text {
+    background-color: var(--secondary-color);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.input-group .form-control {
+    border: 2px solid var(--border-color);
+    font-size: 1.1em;
+    height: auto;
+    padding: 10px 15px;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* Убираем стрелки для числовых полей в разных браузерах */
+.input-group input[type="number"]::-webkit-outer-spin-button,
+.input-group input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-group input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.loading-spinner {
+    margin: 20px;
+    color: var(--primary-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 10px 25px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+    border-color: #357abd;
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 8px 20px;
+    font-size: 1em;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.page-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.matrix-label {
+    color: var(--text-color);
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Кастомный селект */
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.select-selected {
+    background-color: white;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.1em;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.select-selected:after {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--text-color);
+    transition: transform 0.3s ease;
+}
+
+.select-arrow-active:after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.select-items {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+    animation: slideDown 0.3s ease;
+}
+
+.select-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.select-item:hover {
+    background-color: var(--secondary-color);
+}
+
+.select-item.same-as-selected {
+    background-color: rgba(74, 144, 226, 0.1);
+    color: var(--primary-color);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Обновленные стили для группы ввода */
+.input-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.input-group-text {
+    background-color: white;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group .form-control {
+    border: 2px solid var(--border-color);
+    font-size: 1.1em;
+    height: auto;
+    padding: 0.75rem 1.25rem;
+    background-color: white;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.input-group .input-group-text:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.input-group .form-control:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.readonly-result {
+    background-color: #f8f9fa !important;
+    cursor: default !important;
+    user-select: none;
+    border-color: #dee2e6 !important;
+}
+
+.readonly-result:hover, .readonly-result:focus {
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    outline: 0;
+}
+
+.readonly-result:focus {
+    cursor: default !important;
+    background-color: #f8f9fa !important;
+} 

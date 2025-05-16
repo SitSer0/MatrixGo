@@ -6,7 +6,6 @@ import (
 	"sync"
 )
 
-// InverseParallel вычисляет обратную матрицу через параллельное гауссово исключение
 func (m *Matrix[T]) InverseParallel() (*Matrix[T], error) {
 	if m.Rows != m.Cols {
 		return nil, errors.New("матрица должна быть квадратной")

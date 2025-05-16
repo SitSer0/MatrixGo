@@ -79,47 +79,89 @@ func ParseComplex(s string) (Complex, error) {
 	s = strings.TrimSpace(s)
 	s = strings.ReplaceAll(s, " ", "")
 
+	// Обработка специальных случаев
 	switch s {
+	case "":
+		return Complex{Re: 0, Im: 0}, nil
 	case "i":
 		return Complex{Re: 0, Im: 1}, nil
 	case "-i":
 		return Complex{Re: 0, Im: -1}, nil
+	case "+i":
+		return Complex{Re: 0, Im: 1}, nil
 	}
 
+	// Если строка заканчивается на i
 	if strings.HasSuffix(s, "i") {
+		// Убираем i в конце
+		s = s[:len(s)-1]
 
-		sWithoutI := s[:len(s)-1]
+		// Если после удаления i строка пустая, значит было просто i
+		if s == "" {
+			return Complex{Re: 0, Im: 1}, nil
+		}
 
-		lastSign := -1
-		for i := len(sWithoutI) - 1; i > 0; i-- {
-			if sWithoutI[i] == '+' || sWithoutI[i] == '-' {
-				lastSign = i
+		// Если после удаления i остался только знак
+		if s == "+" {
+			return Complex{Re: 0, Im: 1}, nil
+		}
+		if s == "-" {
+			return Complex{Re: 0, Im: -1}, nil
+		}
+
+		// Парсим как мнимую часть
+		im, err := strconv.ParseFloat(s, 64)
+		if err == nil {
+			return Complex{Re: 0, Im: im}, nil
+		}
+
+		// Ищем + или - в середине строки (не в начале)
+		plusIndex := -1
+		minusIndex := -1
+		for i := 1; i < len(s); i++ {
+			if s[i] == '+' {
+				plusIndex = i
+				break
+			}
+			if s[i] == '-' {
+				minusIndex = i
 				break
 			}
 		}
 
-		if lastSign != -1 {
-			rePartStr := sWithoutI[:lastSign]
-			imPartStr := sWithoutI[lastSign:]
-
-			rePart, err1 := strconv.ParseFloat(rePartStr, 64)
-			imPart, err2 := strconv.ParseFloat(imPartStr, 64)
-			if err1 != nil || err2 != nil {
-				return Complex{}, fmt.Errorf("ошибка парсинга комплексного числа: %q", s)
+		if plusIndex > 0 || minusIndex > 0 {
+			splitIndex := plusIndex
+			if minusIndex > 0 && (plusIndex == -1 || minusIndex < plusIndex) {
+				splitIndex = minusIndex
 			}
-			return Complex{Re: rePart, Im: imPart}, nil
+
+			// Парсим действительную часть
+			re, err := strconv.ParseFloat(s[:splitIndex], 64)
+			if err != nil {
+				return Complex{}, fmt.Errorf("ошибка парсинга действительной части: %q", s[:splitIndex])
+			}
+
+			// Парсим мнимую часть
+			im, err := strconv.ParseFloat(s[splitIndex:], 64)
+			if err != nil {
+				return Complex{}, fmt.Errorf("ошибка парсинга мнимой части: %q", s[splitIndex:])
+			}
+
+			return Complex{Re: re, Im: im}, nil
 		}
 
-		imPart, err := strconv.ParseFloat(sWithoutI, 64)
+		// Если нет разделителя, вся строка - коэффициент при i
+		im, err = strconv.ParseFloat(s, 64)
 		if err != nil {
 			return Complex{}, fmt.Errorf("ошибка парсинга мнимой части: %q", s)
 		}
-		return Complex{Re: 0, Im: imPart}, nil
+		return Complex{Re: 0, Im: im}, nil
 	}
 
-	rePart, err := strconv.ParseFloat(s, 64)
+	// Если нет i - это действительное число
+	re, err := strconv.ParseFloat(s, 64)
 	if err != nil {
-		return Complex{}, fmt.Errorf("ошибка парсинга вещественной части: %q", s)
+		return Complex{}, fmt.Errorf("ошибка парсинга действительного числа: %q", s)
 	}
-	return Complex{Re: rePart, Im: 0}, nil
+	return Complex{Re: re, Im: 0}, nil
 }

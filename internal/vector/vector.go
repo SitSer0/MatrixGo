@@ -2,6 +2,7 @@ package vector
 
 import (
 	"MatrixGo/internal/field"
+	"errors"
 	"fmt"
 )
 
@@ -26,4 +27,16 @@ func (v *Vector[T]) At(index int) (T, error) {
 		return v.Data[0].Zero(), fmt.Errorf("индекс за пределами")
 	}
 	return v.Data[index], nil
+}
+
+func (v *Vector[T]) Add(v1 *Vector[T]) (*Vector[T], error) {
+	if v.Len() != v1.Len() {
+		return nil, errors.New("разные размеры векторов")
+	}
+
+	res := NewVector(v.Data)
+	for i := 0; i < v.Len(); i++ {
+		res.Data[i] = res.Data[i].Add(v1.Data[i])
+	}
+	return res, nil
 }

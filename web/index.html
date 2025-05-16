@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .matrix-input {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Матричный калькулятор</h1>
+        
+        <div class="matrix-input">
+            <h3>Матрица 1</h3>
+            <textarea id="matrix1" placeholder="Введите матрицу в формате JSON:
+[[1, 2, 3],
+ [4, 5, 6],
+ [7, 8, 9]]"></textarea>
+        </div>
+
+        <div class="matrix-input">
+            <h3>Матрица 2</h3>
+            <textarea id="matrix2" placeholder="Введите матрицу в формате JSON:
+[[1, 2, 3],
+ [4, 5, 6],
+ [7, 8, 9]]"></textarea>
+        </div>
+
+        <div class="operations">
+            <button onclick="performOperation('add')">Сложение</button>
+            <button onclick="performOperation('multiply')">Умножение</button>
+            <button onclick="performOperation('transpose', 1)">Транспонировать 1</button>
+            <button onclick="performOperation('transpose', 2)">Транспонировать 2</button>
+            <button onclick="performOperation('determinant', 1)">Определитель 1</button>
+            <button onclick="performOperation('determinant', 2)">Определитель 2</button>
+        </div>
+
+        <div id="result">
+            <h3>Результат:</h3>
+            <pre id="resultContent"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function performOperation(op, matrixNum) {
+            try {
+                const resultDiv = document.getElementById('resultContent');
+                let data = {};
+                
+                // Парсим матрицы из текстовых полей
+                if (matrixNum !== 2) {
+                    data.matrix1 = {
+                        type: "float64",
+                        data: JSON.parse(document.getElementById('matrix1').value)
+                    };
+                }
+                if (matrixNum !== 1 && !['transpose', 'determinant'].includes(op)) {
+                    data.matrix2 = {
+                        type: "float64",
+                        data: JSON.parse(document.getElementById('matrix2').value)
+                    };
+                }
+
+                // Отправляем запрос
+                const response = await fetch(`/api/v1/matrix/${op}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Произошла ошибка');
+                }
+
+                resultDiv.textContent = JSON.stringify(result.result, null, 2);
+            } catch (error) {
+                document.getElementById('resultContent').innerHTML = 
+                    `<div class="error">Ошибка: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html> 
